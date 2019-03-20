@@ -8,6 +8,7 @@
       // Moved if Math.abs(downX - upX) > MOVE_THRESHOLD;
       var MOVE_THRESHOLD = 8;
       var TOUCH_DELAY = 1000;
+      var ignoreClass = 'needsclick';
 
       var touchKeysToStore = [
         'clientX',
@@ -232,7 +233,10 @@
           (props && typeof props.onClick === 'function') || handleType[type]
         )) {
           // Add our own events to props
-          args[1] = propsWithFastclickEvents(type, props || {});
+          var classes = new Set(props.className && props.className.split(" "));
+          if (!classes.has(ignoreClass)) {
+            args[1] = propsWithFastclickEvents(type, props || {});
+          }
         }
 
         // Apply args to original createElement function
